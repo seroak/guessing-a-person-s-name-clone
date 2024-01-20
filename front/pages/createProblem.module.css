@@ -1,0 +1,47 @@
+.input {
+  font-size: 30px;
+  border: 2px solid rgb(0, 0, 0);
+  border-radius: 20px;
+  padding: 1%;
+
+  width: 100px;
+  font-family: "Jua", sans-serif;
+  text-align: center;
+  background-color: rgba(230, 230, 230, 0.918);
+  margin: 0 auto 20px;
+  margin: 0 10px 20px;
+}
+.label {
+  display: flex;
+
+  align-items: center;
+}
+.erase {
+  display: block;
+  font-size: 30px;
+  border: 2px solid rgb(0, 0, 0);
+  border-radius: 20px;
+
+  height: 60px;
+  width: 120px;
+  font-family: "Jua", sans-serif;
+  text-align: center;
+  background-color: rgba(230, 230, 230, 0.918);
+  margin: 0 auto 20px;
+  margin: 0 10px 20px;
+  cursor: pointer;
+}
+.button {
+  font-size: 30px;
+  border: 2px solid rgb(0, 0, 0);
+  border-radius: 20px;
+
+  height: 60px;
+  width: 120px;
+  font-family: "Jua", sans-serif;
+  text-align: center;
+  background-color: rgba(230, 230, 230, 0.918);
+  margin: 0 auto 20px;
+  margin: 0 10px 20px;
+  cursor: pointer;
+}

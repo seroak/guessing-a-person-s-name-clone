@@ -1,0 +1,43 @@
+.main {
+  width: unset;
+  padding: 1rem;
+}
+.title {
+  max-width: 1080px;
+  width: 85%;
+  height: auto;
+  margin: auto;
+  font-size: 80px;
+  padding-top: 10vh;
+}
+.comment {
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-size: 15px;
+}
+.choice ul {
+  list-style: none;
+  display: flex;
+  justify-content: space-evenly;
+  padding-left: 0;
+}
+.choice li {
+  font-size: 3rem;
+  padding: 15px;
+  width: 120px;
+  border: 2px solid rgb(0, 0, 0);
+  border-radius: 10%;
+  background-color: cornsilk;
+  box-shadow: 1px 1px 3px rgb(139, 139, 139);
+  margin-right: 10px;
+}
+
+.link {
+  text-decoration: none;
+}
+.gameList:hover {
+  transform: scale(1.2);
+}

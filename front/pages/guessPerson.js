@@ -6,6 +6,7 @@ import Image from "next/image";
 import Router from "next/router";
 import Head from "next/head";
 import { problemAction } from "../reducers/game";
+import { loadUser } from "../reducers/user";
 const GuessPerson = () => {
   const [selectedOption, setSelectedOption] = useState(1);
 
@@ -14,7 +15,7 @@ const GuessPerson = () => {
   // 카운트 다운 시작 조절 false면 시간이 돌지 않고 true면 시간이 카운트 된다
   const [isStarting, setIsStarting] = useState(false);
   // 문제 푸는 시간을 카운트다운하는 변수
-  const [problemTime, setProbelmTime] = useState(1);
+  const [problemTime, setProblemTime] = useState(1);
   // 카운트 마운트를 담당하는 변수
   // setInterval이 변수에 남지 않게 조절하는 역할을
   const [isTimer, setIsTimer] = useState(false);
@@ -33,6 +34,10 @@ const GuessPerson = () => {
   const [score, setScore] = useState(0);
   const [inputValue, setInputValue] = useState("");
   const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(loadUser());
+  }, []);
+
   useEffect(() => {
     dispatch(problemAction());
     console.log(problem);
@@ -73,7 +78,7 @@ const GuessPerson = () => {
 
     if (isTimer) {
       timer = setInterval(() => {
-        setProbelmTime((prevCount) => (prevCount > 0 ? prevCount - 1 : 0));
+        setProblemTime((prevCount) => (prevCount > 0 ? prevCount - 1 : 0));
       }, 1000);
     }
     return () => clearInterval(timer);
@@ -100,7 +105,7 @@ const GuessPerson = () => {
       if (problem[score].name_candi.includes(trimmedValue)) {
         console.log("정답입니다");
         setScore((prev) => prev + 1);
-        setProbelmTime(selectedOption);
+        setProblemTime(selectedOption);
         setInputValue(" ");
       } else {
         setIsCorrect(false);
@@ -111,7 +116,7 @@ const GuessPerson = () => {
 
   const gamestart = (event) => {
     setIsStarting(true);
-    setProbelmTime(selectedOption);
+    setProblemTime(selectedOption);
     setCountStart(true);
   };
   // 문제 시간이 다 되면 종료하는 기능
@@ -146,7 +151,7 @@ const GuessPerson = () => {
     setIsTimer(false);
     setIsStarting(true);
     setCount(3);
-    setProbelmTime(selectedOption);
+    setProblemTime(selectedOption);
     setResume(true);
     // 문제가져오기
     dispatch(problemAction());
@@ -163,7 +168,7 @@ const GuessPerson = () => {
     setIsTimer(false);
     setIsStarting(true);
     setCount(3);
-    setProbelmTime(selectedOption);
+    setProblemTime(selectedOption);
     setResume(false);
     // 문제가져오기
     dispatch(problemAction());

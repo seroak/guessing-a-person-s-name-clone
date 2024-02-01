@@ -14,6 +14,9 @@ export const initialState = {
   signUpDone: false, // 회원가입 상태 체크
   signUpError: null, // 회원가입 에러
 
+  loadUserLoading: false, // 로그인 시도중
+  loadUserError: null, // 로그인 에러
+  loadUserDone: false, // 로그인 상태 체크
   me: null,
 };
 const dummyUser = {
@@ -23,36 +26,39 @@ const dummyUser = {
   Followings: [{ id: "부기초" }, { id: "Chanho park" }, { id: "PAKA" }],
   Followers: [{ id: "부기초" }, { id: "Chanho park" }, { id: "PAKA" }],
 };
+
+export const loadUser = createAsyncThunk("user/loadUser", async () => {
+  const response = await axios.get("/user/loadUser");
+  return response.data;
+});
+
 export const loginAction = createAsyncThunk(
   "user/login",
   async (data, { fulfillWithValue, rejectWithValue }) => {
     try {
-      //   const response = await axios.post("/user/login", data);
-      //   return fulfillWithValue(response.config.data);
-      return fulfillWithValue(data);
+      const response = await axios.post("/user/login", data);
+      console.log(response);
+      return fulfillWithValue(response.data);
     } catch (error) {
-      //   throw rejectWithValue(error.response.data);
-      throw rejectWithValue(data);
+      throw rejectWithValue(error.response.data);
     }
   }
 );
-export const logoutAction = createAsyncThunk("user/logout", async () => {
-  //   const response = await axios.post("/user/logout");
-  return;
+export const logout = createAsyncThunk("user/logout", async () => {
+  const response = await axios.post("/user/logout");
+  return response.data;
 });
 
 export const signUp = createAsyncThunk(
   "user/signup",
   async (data, { rejectWithValue, fulfillWithValue }) => {
     try {
-      //   const response = await axios.post("/user", data);
+      const response = await axios.post("/user", data);
       // response data안에config.data에 회원가입 정보들이 들어있다
-      //   return fulfillWithValue(response.config.data);
-      return fulfillWithValue(data);
+      return fulfillWithValue(response.data);
     } catch (error) {
       //error.response.data 안에 send로 보낸 message가 들어있다
-      //   throw rejectWithValue(error.response.data);
-      throw rejectWithValue(data);
+      throw rejectWithValue(error.response.data);
     }
   }
 );
@@ -72,24 +78,25 @@ const userSlice = createSlice({
         state.logInDone = false;
       })
       .addCase(loginAction.fulfilled, (state, action) => {
+        console.log(action.payload);
         state.logInLoading = false;
         state.logInDone = true;
-        state.me = dummyUser;
+        state.me = action.payload;
       })
       .addCase(loginAction.rejected, (state, action) => {
         state.logInLoading = false;
         state.logInError = action.payload.data.message;
       })
-      .addCase(logoutAction.pending, (state) => {
+      .addCase(logout.pending, (state) => {
         state.logOutLoading = true;
         state.logInDone = true;
       })
-      .addCase(logoutAction.fulfilled, (state) => {
+      .addCase(logout.fulfilled, (state) => {
         state.logOutLoading = false;
         state.logInDone = false;
         state.me = null;
       })
-      .addCase(logoutAction.rejected, (state, action) => {
+      .addCase(logout.rejected, (state, action) => {
         state.logOutLoading = false;
         state.logOutError = action.payload;
       })
@@ -97,16 +104,28 @@ const userSlice = createSlice({
       .addCase(signUp.pending, (state, action) => {
         state.signUpLoading = true;
         state.signUpDone = false;
+        state.signUpError = null;
       })
       .addCase(signUp.fulfilled, (state, action) => {
         state.signUpLoading = false;
         state.signUpDone = true;
-        state.signUpData = action.payload;
       })
       .addCase(signUp.rejected, (state, action) => {
         state.signUpError = action.payload;
       })
-
+      .addCase(loadUser.pending, (state, action) => {
+        state.loadUserLoading = true;
+        state.loadUserDone = false;
+        state.loadUserError = null;
+      })
+      .addCase(loadUser.fulfilled, (state, action) => {
+        state.loadUserLoading = false;
+        state.loadUserDone = true;
+        state.me = action.payload;
+      })
+      .addCase(loadUser.rejected, (state, action) => {
+        state.loadUserError = action.payload;
+      })
       .addDefaultCase((state) => state),
 });
 export default userSlice;

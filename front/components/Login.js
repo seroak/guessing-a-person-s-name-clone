@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import styles from "./Login.module.css";
 import useToggle from "../hook/useToggle";
@@ -9,32 +9,48 @@ import { loginAction } from "../reducers/user";
 import { toggleLogin } from "../reducers/page";
 
 const Login = () => {
-  const [username, onChangeUserName] = useInput("");
+  const [email, onChangeEmail] = useInput("");
   const [password, onChangePassWord] = useInput("");
-  const { logInDone } = useSelector((state) => state.user);
+  const { logInError } = useSelector((state) => state.user);
   const { logInButton } = useSelector((state) => state.page);
   const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(loginAction({ username, password }));
-
+    dispatch(loginAction({ email, password }));
     dispatch(toggleLogin(logInButton));
-
-    // 여기서 실제로 서버로 로그인 요청을 보낼 수 있습니다.
-    // 예제에서는 단순히 콘솔에 출력합니다.
   };
+
+  useEffect(() => {
+    if (logInError) {
+      alert(logInError);
+    }
+  }, [logInError]);
 
   return (
     <>
       <div className={styles.login_component}>
         <form onSubmit={handleSubmit}>
-          <label>
-            Username
-            <input type="text" value={username} onChange={onChangeUserName} />
+          <label
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <div>Email</div>
+            <input type="text" value={email} onChange={onChangeEmail} />
           </label>
           <br />
-          <label>
+          <label
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
             Password
             <input
               type="password"

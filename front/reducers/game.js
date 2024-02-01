@@ -6,6 +6,9 @@ export const initialState = {
   problemLoading: false, // 로그인 시도중
   problemError: null, // 로그인 에러
   problemDone: false, // 로그인 상태 체크
+  getCustomProblemLoading: false, // 로그인 시도중
+  getCustomProblemError: null, // 로그인 에러
+  getCustomProblemDone: false, // 로그인 상태 체크
   problem: [],
 };
 const dummyProblem = [
@@ -48,7 +51,20 @@ export const problemAction = createAsyncThunk(
     }
   }
 );
+export const getCustomProblem = createAsyncThunk(
+  "game/getCustomProblem",
+  async (data, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const response = await axios.post("/getCustomProblem", data);
 
+      return fulfillWithValue(response.data);
+    } catch (error) {
+      error.response.data;
+      throw rejectWithValue(error.response.data);
+      throw rejectWithValue(data);
+    }
+  }
+);
 const gameSlice = createSlice({
   name: "user",
   initialState,
@@ -77,6 +93,19 @@ const gameSlice = createSlice({
         state.problemError = action.payload.data.message;
       })
 
+      .addCase(getCustomProblem.pending, (state) => {
+        state.getCustomProblemLoading = true;
+        state.getCustomProblemDone = false;
+      })
+      .addCase(getCustomProblem.fulfilled, (state, action) => {
+        state.getCustomProblemLoading = false;
+        state.getCustomProblemDone = true;
+        state.problem = action.payload;
+      })
+      .addCase(getCustomProblem.rejected, (state, action) => {
+        state.getCustomProblemLoading = false;
+        state.getCustomProblemError = action.payload.data.message;
+      })
       .addDefaultCase((state) => state),
 });
 

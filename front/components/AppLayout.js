@@ -5,7 +5,7 @@ import useToggle from "../hook/useToggle";
 import Login from "./Login";
 import Signup from "./Signup";
 import { useSelector, useDispatch } from "react-redux";
-import { logoutAction } from "../reducers/user";
+import { logout } from "../reducers/user";
 import { toggleLogin, toggleSignUp } from "../reducers/page";
 import Link from "next/link";
 
@@ -34,7 +34,7 @@ const AppLayout = ({ children }) => {
             <div>{me.nickname}님 환영합니다</div>
             <div
               style={{ cursor: "pointer" }}
-              onClick={() => dispatch(logoutAction())}
+              onClick={() => dispatch(logout())}
             >
               로그아웃
             </div>

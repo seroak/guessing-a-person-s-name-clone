@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AppLayout from "../components/AppLayout";
 import styles from "./index.module.css";
 import Link from "next/link";
-
+import { useDispatch } from "react-redux";
+import { loadUser } from "../reducers/user";
 const Home = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(loadUser());
+  }, []);
   return (
     <AppLayout>
       <main className={styles.main}>
@@ -31,6 +36,16 @@ const Home = () => {
                 문제
                 <br />
                 생성
+              </li>
+            </Link>
+            <Link
+              href="/customProblem"
+              style={{ textDecoration: "none", color: "black" }}
+            >
+              <li className={styles.gameList}>
+                커스텀
+                <br />
+                문제
               </li>
             </Link>
           </ul>

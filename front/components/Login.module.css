@@ -1,11 +1,10 @@
-
 .login_component {
   display: flex;
   font-size: 3rem;
   padding: 15px;
 
   width: 30%;
-  height: 350px;
+  height: 400px;
   padding-top: 50px;
   border: 2px solid rgb(0, 0, 0);
   border-radius: 10%;

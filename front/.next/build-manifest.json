@@ -27,6 +27,11 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
+    "/createProblem": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/createProblem.js"
+    ],
     "/guessPerson": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",

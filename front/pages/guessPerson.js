@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import AppLayout from "../components/AppLayout";
 import styles from "./guessPerson.module.css";
 import { useSelector, useDispatch } from "react-redux";
@@ -34,6 +34,7 @@ const GuessPerson = () => {
   const [score, setScore] = useState(0);
   const [inputValue, setInputValue] = useState("");
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(loadUser());
   }, []);
@@ -177,6 +178,7 @@ const GuessPerson = () => {
     setFinish(false);
     setInputValue("");
   };
+
   return (
     <>
       <Head>
@@ -307,14 +309,16 @@ const GuessPerson = () => {
                   {resume ? (
                     <div style={{ fontSize: 30 }}>이번에는 맞춰봐요</div>
                   ) : (
-                    <button
-                      className={styles.start}
-                      type="button"
-                      onClick={gamestart}
-                      style={{ cursor: "pointer" }}
-                    >
-                      시작
-                    </button>
+                    <form>
+                      <button
+                        className={styles.start}
+                        type="button"
+                        onClick={gamestart}
+                        style={{ cursor: "pointer" }}
+                      >
+                        시작
+                      </button>
+                    </form>
                   )}
                 </div>
               </>

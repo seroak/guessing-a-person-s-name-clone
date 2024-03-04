@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-
+import "./reset.css";
+import "./global.css";
 function useInterval(callback, delay) {
   const savedCallback = useRef();
 

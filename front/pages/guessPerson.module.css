@@ -2,9 +2,10 @@
   margin: 0 auto;
   min-height: 100vh;
   padding-top: 2rem;
-  width: 75%;
+  width: 90%;
   display: block;
 }
+
 .title {
   margin-bottom: 20px;
   border: 2px solid black;
@@ -154,4 +155,16 @@
 }
 .restart:hover {
   background-color: #7a858f;
+}
+@media screen and (max-width: 760px) {
+  .main {
+    display: flex;
+    flex-direction: column;
+  }
+  .name {
+    width: 100%;
+  }
+  .container2 {
+    width: 100%;
+  }
 }

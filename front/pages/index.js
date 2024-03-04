@@ -2,13 +2,21 @@ import React, { useState, useEffect } from "react";
 import AppLayout from "../components/AppLayout";
 import styles from "./index.module.css";
 import Link from "next/link";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loadUser } from "../reducers/user";
+
 const Home = () => {
   const dispatch = useDispatch();
+  const { me } = useSelector((state) => state.user);
   useEffect(() => {
     dispatch(loadUser());
   }, []);
+  const handleLinkClick = (e) => {
+    if (me === null) {
+      e.preventDefault();
+      alert("로그인이 필요합니다");
+    }
+  };
   return (
     <AppLayout>
       <main className={styles.main}>
@@ -17,7 +25,7 @@ const Home = () => {
           <p className={styles.comment}>made by 이규열</p>
         </section>
         <section className={styles.choice}>
-          <ul id={styles.games}>
+          <ul className={styles.games}>
             <Link
               href="/guessPerson"
               style={{ textDecoration: "none", color: "black" }}
@@ -31,6 +39,7 @@ const Home = () => {
             <Link
               href="/createProblem"
               style={{ textDecoration: "none", color: "black" }}
+              onClick={handleLinkClick}
             >
               <li className={styles.gameList}>
                 문제
@@ -41,6 +50,7 @@ const Home = () => {
             <Link
               href="/customProblem"
               style={{ textDecoration: "none", color: "black" }}
+              onClick={handleLinkClick}
             >
               <li className={styles.gameList}>
                 커스텀

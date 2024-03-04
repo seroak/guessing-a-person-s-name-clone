@@ -27,6 +27,11 @@ const dummyProblem = [
     name: "민지",
     name_candi: ["민지", "김민지", ""],
   },
+  {
+    src: "./유나.png",
+    name: "유나",
+    name_candi: ["유나", "신유나", ""],
+  },
 ];
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {

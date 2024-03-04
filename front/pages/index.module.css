@@ -2,6 +2,7 @@
   width: unset;
   padding: 1rem;
 }
+
 .title {
   max-width: 1080px;
   width: 85%;
@@ -40,4 +41,13 @@
 }
 .gameList:hover {
   transform: scale(1.2);
+}
+@media screen and (max-width: 500px) {
+  .games {
+    flex-direction: column;
+    align-items: center;
+  }
+  .gameList {
+    margin-top: 20px;
+  }
 }

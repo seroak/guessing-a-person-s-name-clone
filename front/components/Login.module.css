@@ -15,7 +15,7 @@
   list-style: none;
 }
 .login_component input {
-  width: 300px;
+  width: 80%;
   height: 25px;
   font-size: 20px;
   font-weight: lighter;
@@ -34,4 +34,9 @@
   font-family: "Jua", sans-serif;
   text-align: center;
   background-color: rgba(230, 230, 230, 0.918);
+}
+@media screen and (max-width: 1340px) {
+  .login_component {
+    width: 415px;
+  }
 }

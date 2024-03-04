@@ -24,35 +24,19 @@ const createProblem = () => {
 
   const dispatch = useDispatch();
 
-  // const handleImageChange = (index, event) => {
-  //   const newInputData = [...inputData];
-  //   const file = event.target.files[0];
-
-  //   const reader = new FileReader();
-  //   if (file) {
-  //     reader.readAsDataURL(file);
-  //   }
-  //   reader.onloadend = () => {
-  //     newInputData[index].image = file;
-  //     newInputData[index].previewURL = reader.result;
-  //     setInputData(newInputData);
-  //   };
-  // };
-
   // 사진만 먼저 저장해서 가지고 오는 과정
   const handleImageChange = async (index, event) => {
-    const newInputData = [...inputData];
     const imageFormData = new FormData();
     const file = event.target.files[0];
     imageFormData.append("image", file);
     dispatch(uploadImage(imageFormData));
     //newInputData[index].previewURL = 백엔드에 저장되어있는 사진 프리뷰
     setImageIdx(index); // 수정할 사진의 인덱스를 저장
-
-    setInputData(newInputData);
   };
   // 사진이 변경된 이후 변경된 경로를 inputData에 수정하는 코드
   useEffect(() => {
+    // useState는 2차원 배열 부터는 [...inputData]이런식으로 복사 안된다
+    // 그래서 loadsh로 cloneDeep을 하던가 다른 방법으로 깊은 복사를 해야한다
     let newInputData = _.cloneDeep(inputData);
     if (newInputData.length !== 0) {
       newInputData[imageIdx].Image = imagePath;
@@ -200,16 +184,11 @@ const createProblem = () => {
           <h1>이미지 및 텍스트 입력 폼</h1>
           {inputData.map((input, index) => (
             <div
+              className={styles.create}
               key={index}
               onDragEnter={handleDragEnter}
               onDragOver={handleDragOver}
               onDrop={(e) => handleDrop(index, e)}
-              style={{
-                display: "flex",
-                flexWrap: "nowrap",
-                justifyContent: "center",
-                margin: "60px 50px",
-              }}
             >
               <label
                 className={styles.label}
@@ -301,14 +280,15 @@ const createProblem = () => {
                   }
                 />
               </label>
-
-              <button
-                onClick={() => removeInput(index)}
-                className={styles.erase}
-                type="button"
-              >
-                지우기
-              </button>
+              <div>
+                <button
+                  onClick={() => removeInput(index)}
+                  className={styles.erase}
+                  type="button"
+                >
+                  지우기
+                </button>
+              </div>
             </div>
           ))}
           <button className={styles.button} onClick={addInput} type="button">

@@ -19,14 +19,58 @@ const upload = multer({
     filename(req, file, done) {
       //제로초.png;
       const ext = path.extname(file.originalname); //확장자 추출
-      const basename = path.basename(file.originalname, ext); // 제로초
+      const basename = path.basename(file.originalname, ext); // 제로초 파일명 추출
       done(null, basename + new Date().getTime() + ext); // 제로초1231412.png
     },
   }),
   limits: { fileSize: 20 * 1024 * 1024 },
 });
+
+// 주기적으로 사진을 지워주는 코드
+// 문제를 생성할때 데이터베이스에 올리기 전에 사진을 먼저 올리기때문에 그사이에 코드가 실행되면 문제가 발생할 수있다
+// 정리 전에 서버를 닫고 하는 등 다른 조치가 필요해 보인다
+async function cleanup() {
+  try {
+    const folderPath = "./uploads";
+    const database_Image = [];
+    const problems = await Problem.findAll({
+      attributes: ["Image"],
+    });
+    problems.forEach((problem) => {
+      console.log(`Image: ${problem.Image}`);
+      database_Image.push(problem.Image);
+    });
+    console.log(database_Image);
+    fs.readdir(folderPath, (err, files) => {
+      if (err) {
+        console.error("Error reading folder:", err);
+        return;
+      }
+
+      // 파일 목록을 순회하며 각 파일을 삭제
+      files.forEach((file) => {
+        if (!database_Image.includes(file)) {
+          const filePath = path.join(folderPath, file);
+          console.log("파일 경로", filePath);
+
+          // 파일 삭제
+          fs.unlink(filePath, (err) => {
+            if (err) {
+              console.error("Error deleting file:", err);
+            } else {
+              console.log(`File ${file} deleted successfully`);
+            }
+          });
+        }
+      });
+    });
+  } catch (err) {
+    console.error("Cleanup error:", err);
+  }
+}
+// setInterval(cleanup, 1000);
+
 router.post("/addProblem", isLoggedIn, async (req, res, next) => {
-  console.log("hi");
   try {
     console.log(req.body);
     const problem = await Problem.create({

@@ -13,17 +13,22 @@ import {
 import { loadUser } from "../reducers/user";
 import ShortUniqueId from "short-unique-id";
 import _ from "lodash";
-import Link from "next/link";
+import { useRouter } from "next/router";
 
 const createProblem = () => {
   const { problemList, imagePath } = useSelector((state) => state.problem);
+  const { me } = useSelector((state) => state.user);
   const uid = new ShortUniqueId({ length: 10 });
   const [inputData, setInputData] = useState([]);
   const [imageIdx, setImageIdx] = useState([]);
   const inputRefs = useRef([]);
-
+  const router = useRouter();
   const dispatch = useDispatch();
-
+  useEffect(() => {
+    if (!(me && me.id)) {
+      router.push("/");
+    }
+  }, [me && me.id]);
   // 사진만 먼저 저장해서 가지고 오는 과정
   const handleImageChange = async (index, event) => {
     const imageFormData = new FormData();
@@ -160,6 +165,8 @@ const createProblem = () => {
         );
       }
     });
+    dispatch(getProblem());
+    router.push("/");
   };
   const handleDragEnter = (e) => {
     e.preventDefault();

@@ -5,7 +5,6 @@ const cookieParser = require("cookie-parser");
 const passport = require("passport");
 const dotenv = require("dotenv");
 const path = require("path");
-
 const problemRouter = require("./routes/problem");
 const userRouter = require("./routes/user");
 const db = require("./models");
@@ -46,6 +45,7 @@ app.use(passport.session());
 
 app.use("/problem", problemRouter);
 app.use("/user", userRouter);
+const { Problem } = require("./models");
 
 app.listen(3065, () => {
   console.log("서버 실행 중");

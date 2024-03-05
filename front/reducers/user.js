@@ -27,10 +27,20 @@ const dummyUser = {
   Followers: [{ id: "부기초" }, { id: "Chanho park" }, { id: "PAKA" }],
 };
 
-export const loadUser = createAsyncThunk("user/loadUser", async () => {
-  const response = await axios.get("/user/loadUser");
-  return response.data;
-});
+export const loadUser = createAsyncThunk(
+  "user/loadUser",
+  async (data, { fulfillWithValue, rejectWithValue }) => {
+    try {
+      console.log("loaduer 출발");
+      const response = await axios.get("/user/loadUser");
+
+      console.log("loaduser 도착");
+      return fulfillWithValue(response.data);
+    } catch (error) {
+      throw rejectWithValue(error.response.data);
+    }
+  }
+);
 
 export const loginAction = createAsyncThunk(
   "user/login",
@@ -124,6 +134,7 @@ const userSlice = createSlice({
         state.me = action.payload;
       })
       .addCase(loadUser.rejected, (state, action) => {
+        state.loadUserLoading = false;
         state.loadUserError = action.payload;
       })
       .addDefaultCase((state) => state),

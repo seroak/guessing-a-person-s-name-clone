@@ -4,13 +4,14 @@ import styles from "./index.module.css";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { loadUser } from "../reducers/user";
-
+import wrapper from "../store/configureStore";
+import axios from "axios";
 const Home = () => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
-  useEffect(() => {
-    dispatch(loadUser());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(loadUser());
+  // }, []);
   const handleLinkClick = (e) => {
     if (me === null) {
       e.preventDefault();
@@ -64,4 +65,22 @@ const Home = () => {
     </AppLayout>
   );
 };
+
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) =>
+    async ({ req }) => {
+      const cookie = req ? req.headers.cookie : "";
+      axios.defaults.headers.Cookie = "";
+      // 쿠키가 브라우저에 있는경우만 넣어서 실행
+      // (주의, 아래 조건이 없다면 다른 사람으로 로그인 될 수도 있음)
+      if (req && cookie) {
+        axios.defaults.headers.Cookie = cookie;
+      }
+      await store.dispatch(loadUser());
+    }
+);
+export function reportWebVitals(metric) {
+  console.log(metric);
+}
+
 export default Home;

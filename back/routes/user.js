@@ -9,6 +9,7 @@ const router = express.Router();
 
 router.get("/loadUser", async (req, res, next) => {
   try {
+    console.log("req.user", req.user);
     if (req.user) {
       const fullUserWithoutPassword = await User.findOne({
         where: { id: req.user.id },
@@ -19,6 +20,8 @@ router.get("/loadUser", async (req, res, next) => {
       // return res를 하면 쿠키를 프론트로 보내주다
       // json(user)를 통해 유저 정보도 프론트로 보내준다
       return res.status(200).json(fullUserWithoutPassword);
+    } else {
+      res.status(200).json(null);
     }
   } catch (error) {
     console.error(error);

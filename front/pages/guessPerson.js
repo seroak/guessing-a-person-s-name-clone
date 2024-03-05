@@ -9,7 +9,7 @@ import { problemAction } from "../reducers/game";
 import { loadUser } from "../reducers/user";
 const GuessPerson = () => {
   const [selectedOption, setSelectedOption] = useState(1);
-
+  const { me } = useSelector((state) => state.user);
   // 문제를 시작하는 카운트 다운 변수
   const [count, setCount] = useState(3);
   // 카운트 다운 시작 조절 false면 시간이 돌지 않고 true면 시간이 카운트 된다

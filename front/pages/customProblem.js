@@ -8,9 +8,10 @@ import Head from "next/head";
 import { problemAction } from "../reducers/game";
 import { loadUser } from "../reducers/user";
 import { getProblem } from "../reducers/problem";
+import { useRouter } from "next/router";
 const customProblem = () => {
   const [selectedOption, setSelectedOption] = useState(1);
-
+  const { me } = useSelector((state) => state.user);
   // 문제를 시작하는 카운트 다운 변수
   const [count, setCount] = useState(3);
   // 카운트 다운 시작 조절 false면 시간이 돌지 않고 true면 시간이 카운트 된다
@@ -38,6 +39,12 @@ const customProblem = () => {
   const [score, setScore] = useState(0);
   const [inputValue, setInputValue] = useState("");
   const dispatch = useDispatch();
+  const router = useRouter();
+  useEffect(() => {
+    if (!(me && me.id)) {
+      router.push("/");
+    }
+  }, [me && me.id]);
 
   function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {

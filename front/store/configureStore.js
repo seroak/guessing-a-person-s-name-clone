@@ -17,5 +17,7 @@ const makeStore = () =>
     middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
     preloadedState: serverState, // SSR
   });
-const wrapper = createWrapper(makeStore);
-export default wrapper;
+
+export default createWrapper(makeStore, {
+  debug: process.env.NODE_ENV !== "production",
+});

@@ -14,6 +14,8 @@ import { loadUser } from "../reducers/user";
 import ShortUniqueId from "short-unique-id";
 import _ from "lodash";
 import { useRouter } from "next/router";
+import wrapper from "../store/configureStore";
+import axios from "axios";
 
 const createProblem = () => {
   const { problemList, imagePath } = useSelector((state) => state.problem);
@@ -45,15 +47,13 @@ const createProblem = () => {
     let newInputData = _.cloneDeep(inputData);
     if (newInputData.length !== 0) {
       newInputData[imageIdx].Image = imagePath;
-      console.log(newInputData[imageIdx].Image);
-      console.log(newInputData);
       setInputData(newInputData);
     }
   }, [imagePath]);
 
-  useEffect(() => {
-    dispatch(loadUser());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(loadUser());
+  // }, []);
 
   useEffect(() => {
     dispatch(getProblem());
@@ -81,8 +81,6 @@ const createProblem = () => {
   }, [inputData]);
 
   const handleTextChange = (index, fieldName, value) => {
-    console.log(inputData);
-    console.log("index", index, "fieldName", fieldName);
     let newInputData = _.cloneDeep(inputData);
     newInputData[index][fieldName] = value;
     setInputData(newInputData);
@@ -100,7 +98,6 @@ const createProblem = () => {
         Name4: "",
       },
     ]);
-    console.log(inputData);
   };
 
   const removeInput = (index) => {
@@ -114,7 +111,6 @@ const createProblem = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // 여기에서 모든 입력 값을 처리하는 로직을 수행할 수 있습니다.
-    console.log(inputData);
 
     let flag = false;
     inputData.forEach((input) => {
@@ -309,4 +305,19 @@ const createProblem = () => {
     </>
   );
 };
+
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) =>
+    async ({ req }) => {
+      const cookie = req ? req.headers.cookie : "";
+      axios.defaults.headers.Cookie = "";
+      // 쿠키가 브라우저에 있는경우만 넣어서 실행
+      // (주의, 아래 조건이 없다면 다른 사람으로 로그인 될 수도 있음)
+      if (req && cookie) {
+        axios.defaults.headers.Cookie = cookie;
+      }
+      await store.dispatch(loadUser());
+    }
+);
+
 export default createProblem;

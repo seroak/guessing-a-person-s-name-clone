@@ -2,7 +2,7 @@
   margin: 0 auto;
   min-height: 100vh;
   padding-top: 2rem;
-  width: 90%;
+  width: 75%;
   display: block;
 }
 
@@ -156,7 +156,7 @@
 .restart:hover {
   background-color: #7a858f;
 }
-@media screen and (max-width: 760px) {
+@media screen and (max-width: 920px) {
   .main {
     display: flex;
     flex-direction: column;

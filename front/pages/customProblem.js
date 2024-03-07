@@ -9,6 +9,8 @@ import { problemAction } from "../reducers/game";
 import { loadUser } from "../reducers/user";
 import { getProblem } from "../reducers/problem";
 import { useRouter } from "next/router";
+import wrapper from "../store/configureStore";
+import axios from "axios";
 const customProblem = () => {
   const [selectedOption, setSelectedOption] = useState(1);
   const { me } = useSelector((state) => state.user);
@@ -54,13 +56,14 @@ const customProblem = () => {
     return array;
   }
 
-  useEffect(() => {
-    dispatch(loadUser());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(loadUser());
+  // }, []);
 
-  useEffect(() => {
-    dispatch(getProblem());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getProblem());
+  // }, []);
+
   useEffect(() => {
     setProblem(problemList);
   }, [problemList]);
@@ -68,17 +71,14 @@ const customProblem = () => {
   // 게임 시작 카운트다운
   useEffect(() => {
     let timer;
-    console.log("다시 실행");
 
     if (isStarting) {
       timer = setInterval(() => {
         setCount((prevCount) => {
-          console.log("interval");
           const newCount = prevCount > 0 ? prevCount - 1 : 0;
 
           // 여기서 setIsTimer를 호출하여 count가 0이 되었을 때 실행
           if (newCount === 0) {
-            console.log(newCount);
             setIsTimer(true);
             setIsStarting(false);
             setGameStart(true);
@@ -90,7 +90,6 @@ const customProblem = () => {
     }
 
     return () => {
-      console.log("종료");
       clearInterval(timer);
     };
   }, [isStarting]);
@@ -123,7 +122,7 @@ const customProblem = () => {
   };
   const checkValue = () => {
     const trimmedValue = inputValue.trim();
-    console.log(problem[score]);
+
     if (trimmedValue !== "") {
       if (
         problem[score].Name1 === trimmedValue ||
@@ -131,7 +130,6 @@ const customProblem = () => {
         problem[score].Name3 === trimmedValue ||
         problem[score].Name4 === trimmedValue
       ) {
-        console.log("정답입니다");
         setScore((prev) => prev + 1);
         setProblemTime(selectedOption);
         setInputValue(" ");
@@ -149,9 +147,7 @@ const customProblem = () => {
     setProblemTime(selectedOption);
     setCountStart(true);
   };
-  useEffect(() => {
-    console.log(problem);
-  }, [problem]);
+  useEffect(() => {}, [problem]);
   // 문제 시간이 다 되면 종료하는 기능
   useEffect(() => {
     if (problemTime === 0) {
@@ -165,10 +161,6 @@ const customProblem = () => {
   // 문제를 다 맞추면
   useEffect(() => {
     if (isGameStart) {
-      console.log("문제 끝");
-      console.log(problem);
-      console.log(score);
-
       if (score === problem.length) {
         setFinish(true);
         setIsTimer(false);
@@ -366,4 +358,18 @@ const customProblem = () => {
     </>
   );
 };
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) =>
+    async ({ req }) => {
+      const cookie = req ? req.headers.cookie : "";
+      axios.defaults.headers.Cookie = "";
+      // 쿠키가 브라우저에 있는경우만 넣어서 실행
+      // (주의, 아래 조건이 없다면 다른 사람으로 로그인 될 수도 있음)
+      if (req && cookie) {
+        axios.defaults.headers.Cookie = cookie;
+      }
+      await store.dispatch(loadUser());
+      await store.dispatch(getProblem());
+    }
+);
 export default customProblem;

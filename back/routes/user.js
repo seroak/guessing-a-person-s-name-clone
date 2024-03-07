@@ -21,6 +21,7 @@ router.get("/loadUser", async (req, res, next) => {
       // json(user)를 통해 유저 정보도 프론트로 보내준다
       return res.status(200).json(fullUserWithoutPassword);
     } else {
+      // req.user가 없으면 리턴을 해줘야지 trycatch는 백앤드 에러지 req.user가 없다고 에러가 아니지
       res.status(200).json(null);
     }
   } catch (error) {

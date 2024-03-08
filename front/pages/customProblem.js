@@ -60,9 +60,9 @@ const customProblem = () => {
   //   dispatch(loadUser());
   // }, []);
 
-  // useEffect(() => {
-  //   dispatch(getProblem());
-  // }, []);
+  useEffect(() => {
+    dispatch(getProblem());
+  }, []);
 
   useEffect(() => {
     setProblem(problemList);
@@ -214,7 +214,7 @@ const customProblem = () => {
       <AppLayout>
         <main className={styles.main}>
           <div className={styles.title}>
-            <h1>인물 퀴즈</h1>
+            <h1>커스텀 문제</h1>
             <div className={styles.limit}>
               제한시간은
               <select
@@ -369,7 +369,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
         axios.defaults.headers.Cookie = cookie;
       }
       await store.dispatch(loadUser());
-      await store.dispatch(getProblem());
     }
 );
 export default customProblem;

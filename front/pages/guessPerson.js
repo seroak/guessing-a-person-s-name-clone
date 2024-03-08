@@ -41,10 +41,10 @@ const GuessPerson = () => {
   //   dispatch(loadUser());
   // }, []);
 
-  // useEffect(() => {
-  //   dispatch(problemAction());
-  //   console.log(problem);
-  // }, []);
+  useEffect(() => {
+    dispatch(problemAction());
+    console.log(problem);
+  }, []);
   // 게임 시작 카운트다운
   useEffect(() => {
     let timer;
@@ -334,7 +334,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
         axios.defaults.headers.Cookie = cookie;
       }
       await store.dispatch(loadUser());
-      await store.dispatch(problemAction());
     }
 );
 export default GuessPerson;

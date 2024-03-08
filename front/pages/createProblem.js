@@ -40,6 +40,7 @@ const createProblem = () => {
     //newInputData[index].previewURL = 백엔드에 저장되어있는 사진 프리뷰
     setImageIdx(index); // 수정할 사진의 인덱스를 저장
   };
+
   // 사진이 변경된 이후 변경된 경로를 inputData에 수정하는 코드
   useEffect(() => {
     // useState는 2차원 배열 부터는 [...inputData]이런식으로 복사 안된다
@@ -184,7 +185,14 @@ const createProblem = () => {
     <>
       <AppLayout>
         <form onSubmit={handleSubmit} encType="multipart/form-data">
-          <h1>이미지 및 텍스트 입력 폼</h1>
+          <h1
+            style={{
+              marginTop: 30,
+              fontSize: "1.5rem",
+            }}
+          >
+            자신이 원하는 사람으로 문제를 만들어보세요!!
+          </h1>
           {inputData.map((input, index) => (
             <div
               className={styles.create}
@@ -298,7 +306,7 @@ const createProblem = () => {
             만들기
           </button>
           <button className={styles.button} type="submit">
-            Submit
+            저장하기
           </button>
         </form>
       </AppLayout>

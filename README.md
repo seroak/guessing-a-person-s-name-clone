@@ -43,8 +43,9 @@
 ## 🛠️Architecture
 
 ---
+![Untitled](https://github.com/user-attachments/assets/fe0ec1df-3ad2-4416-b9e9-f1d7a0d6d688)
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/bda322a3-79e5-4331-ac1a-08a516a320ba/25155900-4158-4f35-ba87-7ca01bdbfad7/Untitled.png)
+
 # front-End 설치 및 실행
 cd front</br>
 npm i</br>

@@ -1,4 +1,4 @@
-﻿# guessing-a-person-s-name-clone
+﻿# guessing-a-person-name-clone
 ## 만들게 된 계기
 
 ---
